@@ -28,14 +28,11 @@ public class TestLogInCourier {
     @DisplayName("Успешный логин курьра в системе")
     @Test
     public void logInCourier() {
-        boolean isOk = courierClient.create(courier)
-                .extract().path("ok");
-
+        assertTrue(courierClient.create(courier).extract().path("ok"));
         CourierCredentials creds = CourierCredentials.from(courier);
         courierId = courierClient.logIn(creds, 200)
                 .extract().path("id");
 
-        assertTrue(isOk);
         assertNotEquals(0, courierId);
     }
 
@@ -43,20 +40,16 @@ public class TestLogInCourier {
     @Test
     public void logInCourierWithoutPassword() {
         CourierCredentials creds = CourierCredentials.emptyPassword(courier);
-        String logInWithoutPassword = courierClient.logIn(creds, 400)
-                .extract().path("message");
 
-        assertEquals(logInWithoutPassword, "Недостаточно данных для входа");
+        assertEquals(courierClient.logIn(creds, 400).extract().path("message"), "Недостаточно данных для входа");
     }
 
     @DisplayName("Логин курьера с несуществующими кредами")
     @Test
     public void logInCourierNotFound() {
         CourierCredentials creds = CourierCredentials.credsNotFound(courier);
-        String logInWithoutPassword = courierClient.logIn(creds, 404)
-                .extract().path("message");
 
-        assertEquals(logInWithoutPassword, "Учетная запись не найдена");
+        assertEquals(courierClient.logIn(creds, 404).extract().path("message"), "Учетная запись не найдена");
 
     }
 }

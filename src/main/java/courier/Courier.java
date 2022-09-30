@@ -1,6 +1,6 @@
 package courier;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import com.github.javafaker.Faker;
 import lombok.Data;
 
 @Data
@@ -16,22 +16,22 @@ public class Courier {
         this.password = password;
         this.firstName = firstName;
     }
-
+    static Faker faker = new Faker();
     public static Courier getRandomCourier() {
         return new Courier(
-                RandomStringUtils.randomAlphanumeric(10) + "@example.com",
-                RandomStringUtils.randomAlphanumeric(10),
-                "P@ssw0rd",
-                RandomStringUtils.randomAlphabetic(10)
+                faker.internet().safeEmailAddress(),
+                faker.name().username(),
+                faker.internet().password(),
+                faker.name().firstName()
         );
     }
 
     public static Courier getWithoutPassword() {
         return new Courier(
-                RandomStringUtils.randomAlphanumeric(10) + "@example.com",
-                RandomStringUtils.randomAlphanumeric(10),
+                faker.internet().safeEmailAddress(),
+                faker.name().username(),
                 "",
-                RandomStringUtils.randomAlphabetic(10)
+                faker.name().firstName()
         );
     }
 

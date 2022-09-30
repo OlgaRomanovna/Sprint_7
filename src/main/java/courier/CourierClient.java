@@ -1,4 +1,6 @@
 package courier;
+
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 
 public class CourierClient extends BaseClient {
@@ -12,8 +14,7 @@ public class CourierClient extends BaseClient {
                 .body(courier)
                 .when()
                 .post(ROOT)
-                .then().log().all()
-                .statusCode(201);
+                .then().log().all();
     }
 
     public ValidatableResponse createFailed(Courier courier) {
@@ -21,8 +22,7 @@ public class CourierClient extends BaseClient {
                 .body(courier)
                 .when()
                 .post(ROOT)
-                .then().log().all()
-                .statusCode(400);
+                .then().log().all();
     }
 
     public ValidatableResponse logIn(CourierCredentials creds, int statusCode) {
@@ -31,7 +31,6 @@ public class CourierClient extends BaseClient {
                 .when()
                 .post(LOGIN)
                 .then().log().all()
-                .assertThat()
                 .statusCode(statusCode);
     }
 
@@ -40,9 +39,7 @@ public class CourierClient extends BaseClient {
                 .body(creds)
                 .when()
                 .post(ROOT)
-                .then().log().all()
-                .assertThat()
-                .statusCode(409);
+                .then().log().all();
     }
 
     public void delete(int courierId) {
@@ -51,7 +48,6 @@ public class CourierClient extends BaseClient {
                 .when()
                 .delete(COURIER)
                 .then().log().all()
-                .assertThat()
                 .statusCode(200);
     }
 }

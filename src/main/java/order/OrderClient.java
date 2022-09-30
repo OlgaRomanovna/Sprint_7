@@ -1,7 +1,6 @@
 package order;
+
 import courier.BaseClient;
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 
 
@@ -11,35 +10,25 @@ public class OrderClient extends BaseClient {
     private final String LISTORDERS = "orders";
 
     public ValidatableResponse create(String json) {
-        return getSpec()
-                .body(json)
+        return getSpec().body("{\"firstName\": \"Naruto\",\"lastName\": \"Uchiha\",\"address\": \"Konoha, 142\",\"metroStation\": 4,\"phone\": \"+7 800 355 35 35\",\"rentTime\": 5,\"deliveryDate\": \"2020-06-06\",\"comment\": \"Saske, come back to Konoha\",\"color\":" + json + "}")
                 .when()
                 .post(ORDER)
-                .then().log().all()
-                .statusCode(201);
+                .then().log().all();
     }
 
-    public void deleteOrder(int track){
+    public void deleteOrder(int track) {
         getSpec()
                 .and()
                 .put(CANCEL + "?track=" + track)
                 .then().log().all()
                 .statusCode(200);
     }
-    public Integer getTrackOrder (Response response) {
-        try {
-            JsonPath jsonPathEvaluator = response.jsonPath();
-            return  jsonPathEvaluator.get("track");
-        }
-        catch (Exception Exception){
-            return null;
-        }
-    }
 
     public ValidatableResponse listOrders() {
         return getSpec()
                 .and()
-                .get(LISTORDERS).then().log().all()
-                .statusCode(200);
+                .get(LISTORDERS)
+                .then().log().all();
     }
 }
+
